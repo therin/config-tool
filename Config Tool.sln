@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Config Tool", "Config Tool\Config Tool.csproj", "{E440D717-A65D-4234-9EB5-3D570B8204D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		1.2|Any CPU = 1.2|Any CPU
+		1.3|Any CPU = 1.3|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		V1.1|Any CPU = V1.1|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E440D717-A65D-4234-9EB5-3D570B8204D4}.1.2|Any CPU.ActiveCfg = 1.2|Any CPU
+		{E440D717-A65D-4234-9EB5-3D570B8204D4}.1.2|Any CPU.Build.0 = 1.2|Any CPU
+		{E440D717-A65D-4234-9EB5-3D570B8204D4}.1.3|Any CPU.ActiveCfg = 1.3|Any CPU
+		{E440D717-A65D-4234-9EB5-3D570B8204D4}.1.3|Any CPU.Build.0 = 1.3|Any CPU
+		{E440D717-A65D-4234-9EB5-3D570B8204D4}.Debug|Any CPU.ActiveCfg = v1|Any CPU
+		{E440D717-A65D-4234-9EB5-3D570B8204D4}.Debug|Any CPU.Build.0 = v1|Any CPU
+		{E440D717-A65D-4234-9EB5-3D570B8204D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E440D717-A65D-4234-9EB5-3D570B8204D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E440D717-A65D-4234-9EB5-3D570B8204D4}.V1.1|Any CPU.ActiveCfg = V1.1|Any CPU
+		{E440D717-A65D-4234-9EB5-3D570B8204D4}.V1.1|Any CPU.Build.0 = V1.1|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
