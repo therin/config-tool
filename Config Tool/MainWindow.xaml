@@ -1,0 +1,234 @@
+﻿<Window
+        
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Config_Tool.MainWindow"
+        
+        Title="SmartTrade Config Tool" Grid.IsSharedSizeScope="True" MinWidth="100" MinHeight="359" HorizontalAlignment="Left" VerticalAlignment="Top" Width="847.5" Height="451.5" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TabControl RenderTransformOrigin="0.5,0.5">
+            <TabControl.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="0.128"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="0.998"/>
+                </TransformGroup>
+            </TabControl.RenderTransform>
+            <TabItem Header="Configuration" Margin="0">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="66*"/>
+                        <ColumnDefinition Width="73*"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="Client Config" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="112" Width="382">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="147*"/>
+                                <ColumnDefinition Width="223*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="clientTextbox" HorizontalAlignment="Left" Height="26" Margin="3,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="139" Loaded="TextBox_Loaded" TextAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Button x:Name="buttonClient" Content="Update Client Config" HorizontalAlignment="Left" Margin="85,43,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click" RenderTransformOrigin="3.827,2.5" Height="26" Grid.Column="1"/>
+                            <Label x:Name="currentClient" Content="" HorizontalAlignment="Left" Margin="131,12,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.821,1.154" Height="26" Width="153" Loaded="currentClient_Loaded" Grid.ColumnSpan="2"/>
+                            <Label Content="Current Value:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100"/>
+                            <TextBox x:Name="clientPortTextbox" Height="26" Margin="0,43,143,0" TextWrapping="Wrap" VerticalAlignment="Top" Loaded="clientPortTextbox_Loaded" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Label x:Name="currentClient_Copy" Content="" HorizontalAlignment="Left" Margin="153,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.821,1.154" Height="26" Width="60" Loaded="currentClient_Copy_Loaded" Grid.Column="1"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Mobile Config" HorizontalAlignment="Left" Margin="3,10,0,0" VerticalAlignment="Top" Height="112" Width="423" Grid.Column="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="86*"/>
+                                <ColumnDefinition Width="61*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="mobileTextbox" HorizontalAlignment="Left" Height="26" Margin="10,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="159" Loaded="mobileTextbox_Loaded" TextAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Button x:Name="buttonMobile" Content="Update Mobile Config" HorizontalAlignment="Left" Margin="21,47,0,0" VerticalAlignment="Top" Width="128" Click="buttonMobile_Click" RenderTransformOrigin="3.827,2.5" Height="26" Grid.Column="1"/>
+                            <Label x:Name="currentMobile" Content="" HorizontalAlignment="Left" Margin="131,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.821,1.154" Height="26" Width="153" Loaded="currentMobile_Loaded" Grid.ColumnSpan="2"/>
+                            <Label Content="Current Value:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100"/>
+                            <TextBox x:Name="mobilePortTextbox" HorizontalAlignment="Left" Height="27" Margin="174,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="82" Loaded="mobilePortTextbox_Loaded" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+                            <Label x:Name="currentMobile_Copy" Content="" HorizontalAlignment="Left" Margin="65,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.821,1.154" Height="26" Width="84" Loaded="currentMobile_Copy_Loaded" Grid.Column="1"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="SmartTime Config" HorizontalAlignment="Left" Margin="0,127,0,0" VerticalAlignment="Top" Height="106" Width="425" Grid.Column="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="155*"/>
+                                <ColumnDefinition Width="215*"/>
+                                <ColumnDefinition Width="55*"/>
+                                <ColumnDefinition Width="7*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="timeTextbox" HorizontalAlignment="Left" Height="26" Margin="10,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="172" Loaded="timeTextbox_Loaded" TextAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+                            <Button x:Name="buttonTime" Content="Update ST Config" HorizontalAlignment="Left" Margin="128,53,0,0" VerticalAlignment="Top" Width="128" Click="buttonTime_Click" RenderTransformOrigin="3.827,2.5" Height="26" Grid.ColumnSpan="2" Grid.Column="1"/>
+                            <Label x:Name="currentTime" Content="" Margin="10,12,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.821,1.154" Height="26" Loaded="currentTime_Loaded" Grid.Column="1" HorizontalAlignment="Left" Width="153"/>
+                            <Label Content="Current Value:" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top" Width="100"/>
+                            <TextBox x:Name="timePortTextbox" HorizontalAlignment="Left" Height="27" Margin="39,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="84" Loaded="timePortTextbox_Loaded" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Label x:Name="currentTime_Copy" Content="" HorizontalAlignment="Left" Margin="198,12,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.821,1.154" Height="26" Width="49" Loaded="currentTime_Copy_Loaded" Grid.Column="1" Grid.ColumnSpan="2"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="SmartGate Config" HorizontalAlignment="Left" Margin="11,127,0,0" VerticalAlignment="Top" Height="106" Width="382">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="gateTextbox" HorizontalAlignment="Left" Height="26" Margin="6,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="136" Loaded="gateTextbox_Loaded" TextAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Button x:Name="buttonGate" Content="Update SG Config" HorizontalAlignment="Left" Margin="232,53,0,0" VerticalAlignment="Top" Width="128" Click="buttonGate_Click" RenderTransformOrigin="3.827,2.5" Height="26"/>
+                            <Label x:Name="currentGate" Content="" HorizontalAlignment="Left" Margin="152,12,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.821,1.154" Height="26" Width="153" Loaded="currentGate_Loaded"/>
+                            <Label Content="Current Value:" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top" Width="100"/>
+                            <TextBox x:Name="gatePortTextbox" HorizontalAlignment="Left" Height="27" Margin="147,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80" Loaded="gatePortTextbox_Loaded" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Label x:Name="currentGate_Copy" Content="" HorizontalAlignment="Left" Margin="305,12,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.821,1.154" Height="26" Width="55" Loaded="currentGate_Copy_Loaded"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Service Config" HorizontalAlignment="Left" Margin="10,238,0,0" VerticalAlignment="Top" Height="141" Width="812" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="buttonService" Content="Update Service Config" HorizontalAlignment="Left" Margin="651,32,0,0" VerticalAlignment="Top" Width="144" Click="buttonService_Click" RenderTransformOrigin="3.827,2.5" Height="78"/>
+                            <Label x:Name="currentService" Content="" HorizontalAlignment="Left" Margin="99,1,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.821,1.154" Height="26" Width="520" Loaded="currentService_Loaded"/>
+                            <Label Content="Current Value:" HorizontalAlignment="Left" Margin="10,1,0,0" VerticalAlignment="Top" Width="100"/>
+                            <TextBox x:Name="serviceDBTextbox" HorizontalAlignment="Left" Height="34" Margin="10,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="539" Loaded="serviceDBTextbox_Loaded" TextAlignment="Center" RenderTransformOrigin="1.149,0.5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <TextBox x:Name="servicePortTextbox" Height="34" Margin="554,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Loaded="servicePortTextbox_Loaded" Width="92" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" RenderTransformOrigin="0.321,0.553"/>
+                            <Label x:Name="currentService_Copy" Content="" HorizontalAlignment="Left" Margin="619,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.821,1.154" Height="26" Width="144" Loaded="currentService_Copy_Loaded"/>
+                            <TextBox x:Name="updaterlocationTextbox" HorizontalAlignment="Left" Margin="10,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="328" Height="39" Loaded="updaterlocationTextbox_Loaded" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <TextBox x:Name="updaterbackupTextbox" HorizontalAlignment="Left" Margin="343,71,0,0" TextWrapping="Wrap" Width="303" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Loaded="updaterbackupTextbox_Loaded"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Services" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="71" Margin="-1,0,0,0">
+                <Grid Background="#FFE5E5E5" Margin="0,3,0,-3">
+                    <GroupBox Header="Create Services">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="201*"/>
+                                <ColumnDefinition Width="334*"/>
+                                <ColumnDefinition Width="187*"/>
+                                <ColumnDefinition Width="100*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="246*"/>
+                                <RowDefinition Height="125*"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="SmartTrade Service Name" HorizontalAlignment="Left" Margin="30,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.474,-1" Width="146"/>
+                            <Label Content="Mobile Service Name" HorizontalAlignment="Left" Margin="30,85,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.474,-1" Width="144"/>
+                            <Label Content="SmartTime Service Name" HorizontalAlignment="Left" Margin="27,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.474,-1" Width="147"/>
+                            <TextBox x:Name="STServiceTextbox" HorizontalAlignment="Left" Height="38" Margin="10,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="187" Text="SmartTrade V6 Service" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <TextBox x:Name="STMobileTextbox" HorizontalAlignment="Left" Height="41" Margin="10,116,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="187" Text="SmartTrade Mobile Service" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <TextBox x:Name="STTimeTextbox" HorizontalAlignment="Left" Height="39" Margin="10,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="187" Text="SmartTrade SmartTime Service" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Button Content="Create" HorizontalAlignment="Left" Margin="3.604,40,0,0" VerticalAlignment="Top" Width="86" Click="Button_Click_1" Height="39" RenderTransformOrigin="0.782,0.436" Grid.Column="3"/>
+                            <Button x:Name="createMobileButton" Content="Create" HorizontalAlignment="Left" Margin="3.604,119,0,0" VerticalAlignment="Top" Width="86" Height="38" Click="createMobileButton_Click" RenderTransformOrigin="0.896,0.474" Grid.Column="3"/>
+                            <Button x:Name="createTimeButton" Content="Create" HorizontalAlignment="Left" Margin="3.604,196,0,0" VerticalAlignment="Top" Width="86" RenderTransformOrigin="0.933,0.5" Height="39" Click="createTimeButton_Click" Grid.Column="3"/>
+                            <TextBox x:Name="servicePathTextbox" HorizontalAlignment="Left" Height="38" Margin="4,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="321" Loaded="servicePathTextbox_Loaded" RenderTransformOrigin="0.504,0.167" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1"/>
+                            <TextBox x:Name="mobilePathTextbox" HorizontalAlignment="Left" Height="42" Margin="4,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="321" Loaded="mobilePathTextbox_Loaded" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1"/>
+                            <TextBox x:Name="timeTextbox_Copy" HorizontalAlignment="Left" Height="39" Margin="4,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="321" Loaded="timeTextbox_Copy_Loaded" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="1"/>
+                            <ComboBox x:Name="ServiceComboBox" HorizontalAlignment="Left" Margin="3,42,0,0" VerticalAlignment="Top" Width="175" Loaded="ServiceComboBox_Loaded" Height="38" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="2"/>
+                            <ComboBox x:Name="mobileSComboBox" HorizontalAlignment="Left" Margin="3,116,0,0" VerticalAlignment="Top" Width="175" Loaded="mobileSComboBox_Loaded" Height="41" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="2"/>
+                            <ComboBox x:Name="smarttimeSCombobox" HorizontalAlignment="Left" Margin="3,196,0,0" VerticalAlignment="Top" Width="175" Loaded="smarttimeSCombobox_Loaded" Height="39" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="2"/>
+                            <Label Content="SmartTrade Service Path" HorizontalAlignment="Left" Margin="98,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.474,-1" Width="146" Grid.Column="1"/>
+                            <Label Content="SmartTrade Service Dependency" HorizontalAlignment="Left" Margin="3,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.474,-1" Width="183" Grid.Column="2"/>
+                            <Label Content="Mobile Service Path" HorizontalAlignment="Left" Margin="98,85,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.474,-1" Width="146" Grid.Column="1"/>
+                            <Label Content="Mobile Service Dependency" HorizontalAlignment="Left" Margin="13,85,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.474,-1" Width="183" Grid.Column="2" Grid.ColumnSpan="2"/>
+                            <Label Content="SmartTime Service Dependency" HorizontalAlignment="Left" Margin="3,162,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.474,-1" Width="183" Grid.Column="2"/>
+                            <Label Content="SmartTime Service Path" HorizontalAlignment="Left" Margin="98,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.474,-1" Width="146" Grid.Column="1"/>
+                            <TextBox x:Name="logTextbox" HorizontalAlignment="Left" Height="95" Margin="98,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="513" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"/>
+                            <Button x:Name="deleteSButton" Content="Delete" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.387,-1.45" Click="deleteSButton_Click" Grid.Row="1" Grid.Column="1"/>
+                            <Button x:Name="startSButton" Content="Start" HorizontalAlignment="Left" Margin="10,32,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.493,-0.4" Click="startSButton_Click" Grid.Row="1" Grid.Column="1"/>
+                            <Button x:Name="stopSButton" Content="Stop" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Width="75" Click="stopSButton_Click" RenderTransformOrigin="0.529,0.25" Grid.Row="1" Grid.Column="1"/>
+                            <Label Content="List of relevant services:" HorizontalAlignment="Left" Margin="10,236,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.432,0.256" Grid.RowSpan="2"/>
+                            <ListBox x:Name="servicesListbox" HorizontalAlignment="Left" Height="95" Margin="10,20,0,0" VerticalAlignment="Top" Width="190" Loaded="servicesListbox_Loaded" RenderTransformOrigin="-0.844,2.008" Grid.Row="1"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Database" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="77" Margin="-1,0,0,0" RenderTransformOrigin="0.502,0.167">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="233*"/>
+                        <RowDefinition Height="160*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="129*"/>
+                        <ColumnDefinition Width="149*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="logTextbox2" HorizontalAlignment="Left" Height="88" Margin="10,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="373" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <GroupBox Header="Downloads" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="121" Width="373">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40*"/>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="34*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="114*"/>
+                                <ColumnDefinition Width="156*"/>
+                                <ColumnDefinition Width="91*"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="downloadCombobox" HorizontalAlignment="Left" Margin="4,39,0,0" VerticalAlignment="Top" Width="355" Height="24" IsEditable="True" SelectedIndex="0" Grid.ColumnSpan="3" Grid.RowSpan="2">
+                                <ComboBoxItem x:Name="cbi1" Content="http://smarttrade.biz/downloads/SQLEXPRWT_x64_ENU.exe"/>
+                                <ComboBoxItem x:Name="cbi2" Content="http://smarttrade.biz/downloads/SQLEXPRWT_x86_ENU.exe"/>
+                                <ComboBoxItem x:Name="cbi3" Content="http://smarttrade.biz/downloads/db/v6blank-AUS.bak"/>
+                                <ComboBoxItem x:Name="cbi4" Content="http://smarttrade.biz/downloads/db/v6blank-NZ.bak"/>
+                                <ComboBoxItem x:Name="cbi5" Content="http://smarttrade.biz/downloads/db/v6demo-AUS.bak"/>
+                                <ComboBoxItem x:Name="cbi6" Content="http://smarttrade.biz/downloads/db/v6demo-NZ.bak"/>
+                            </ComboBox>
+                            <Button x:Name="sqlDownloadButton" Content="Download" HorizontalAlignment="Left" Margin="4,3,0,0" VerticalAlignment="Top" Width="106" Height="28" Click="sqlDownloadButton_Click" RenderTransformOrigin="0.323,-0.217" Grid.Row="2"/>
+                            <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="28" Margin="1,3,0,0" VerticalAlignment="Top" Width="153" RenderTransformOrigin="-2.33,-2" Grid.Column="1" Grid.Row="2"/>
+                            <Label x:Name="labelSpeed" Content="" HorizontalAlignment="Left" Margin="3,3,0,0" VerticalAlignment="Top" Height="28" Width="78" Grid.Column="2" Grid.Row="2"/>
+                            <Label x:Name="systemLabel" Content="" HorizontalAlignment="Center" Margin="4,5,116,6" VerticalAlignment="Center" Width="150" Height="29" Loaded="systemLabel_Loaded_1" Grid.ColumnSpan="2"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="SQL Installation" HorizontalAlignment="Left" Margin="10,229,0,0" VerticalAlignment="Top" Height="154" Width="821" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="340*"/>
+                                <ColumnDefinition Width="61*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="sqlCmdTextbox" HorizontalAlignment="Left" Height="112" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="668" Loaded="sqlCmdTextbox_Loaded"/>
+                            <Button Content="Install" HorizontalAlignment="Left" Margin="3.118,10,0,0" VerticalAlignment="Top" Width="109" Height="112" Click="Button_Click_2" Grid.Column="1"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="DB Operations" HorizontalAlignment="Left" Margin="12,10,0,0" VerticalAlignment="Top" Height="214" Width="431" Grid.Column="1">
+                        <Grid Margin="2,0,-2,0">
+                            <ComboBox x:Name="sqlInstanceCombobox" HorizontalAlignment="Left" Margin="39,31,0,0" VerticalAlignment="Top" Width="142" DropDownOpened="sqlInstanceCombobox_DropDownOpened" RenderTransformOrigin="0.812,0.5"/>
+                            <ComboBox x:Name="sqlDBCombobox" HorizontalAlignment="Left" Margin="238,31,0,0" VerticalAlignment="Top" Width="132" DropDownOpened="sqlDBCombobox_DropDownOpened"/>
+                            <Label Content="Select SQL instance:" HorizontalAlignment="Left" Margin="51,5,0,0" VerticalAlignment="Top"/>
+                            <Label Content="Select Database:" HorizontalAlignment="Left" Margin="258,5,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.478,0.038"/>
+                            <Label Content="Backup to:" HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.534,0"/>
+                            <TextBox x:Name="backupPathTextbox" HorizontalAlignment="Left" Height="34" Margin="10,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="318" RenderTransformOrigin="0.501,-0.261" Loaded="backupPathTextbox_Loaded" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Button x:Name="backupdbButton" Content="Backup" HorizontalAlignment="Left" Margin="333,79,0,0" VerticalAlignment="Top" Width="81" RenderTransformOrigin="1.095,0.5" Height="34" Click="backupdbButton_Click"/>
+                            <Label Content="Restore from:" HorizontalAlignment="Left" Margin="10,113,0,0" VerticalAlignment="Top"/>
+                            <TextBox x:Name="restorePathTextbox" HorizontalAlignment="Left" Height="43" Margin="10,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="156" RenderTransformOrigin="0.501,-0.261" Loaded="restorePathTextbox_Loaded" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            <Button x:Name="restoredbButton" Content="Restore" HorizontalAlignment="Left" Margin="333,139,0,0" VerticalAlignment="Top" Width="81" RenderTransformOrigin="1.095,0.5" Height="43" Click="restoredbButton_Click"/>
+                            <Label Content="As:" HorizontalAlignment="Left" Margin="238,118,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.802,0.577"/>
+                            <TextBox x:Name="restoredDBnameTextbox" HorizontalAlignment="Left" Height="43" Margin="239,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="89" RenderTransformOrigin="0.501,-0.261" Loaded="backupPathTextbox_Loaded" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="SmartTradeV6"/>
+                            <Button x:Name="selectfileButton" Content="Select file" HorizontalAlignment="Left" Margin="171,138,0,0" VerticalAlignment="Top" Width="62" RenderTransformOrigin="1.095,0.5" Height="44" Click="selectfileButton_Click"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Other" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="77" Margin="-1,0,0,0" RenderTransformOrigin="0.502,0.167">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="firewallButton" Content="Open port in firewall" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Width="816" Height="42" Click="firewallButton_Click"/>
+                    <TextBox x:Name="porttextBox" HorizontalAlignment="Left" Height="42" Margin="10,198,0,0" TextWrapping="Wrap" Text="4000" VerticalAlignment="Top" Width="816" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <Button x:Name="permissionsButton" Content="Set permissions" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="816" Height="42" Click="permissionsButton_Click"/>
+                    <Button x:Name="shareButton" Content="Share folder" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Width="816" Height="42" RenderTransformOrigin="0.521,0.224" Click="shareButton_Click"/>
+                    <Button x:Name="backup_button" Content="Create scheduled task for DB backup" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top" Width="816" Height="42" RenderTransformOrigin="0.521,0.224" Click="backup_button_Click"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>
