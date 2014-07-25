@@ -195,6 +195,7 @@ namespace Config_Tool
                 sqlRestore.Devices.Add(deviceItem);
                 sqlRestore.Database = databaseName;
                 ServerConnection connection = new ServerConnection(serverName);
+                connection.StatementTimeout = 600;
                 Server sqlServer = new Server(connection);
                 sqlRestore.Action = RestoreActionType.Database;
                 string logFile = System.IO.Path.GetDirectoryName(backUpFile);
