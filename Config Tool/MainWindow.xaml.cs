@@ -40,14 +40,13 @@ using System.Security;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Threading;
-
+using System.Windows.Threading;
 
 namespace Config_Tool
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    /// dddsdfsdfdd123
 
 
     public partial class MainWindow : Window
@@ -69,6 +68,7 @@ namespace Config_Tool
                            return Assembly.Load(assemblyData);
                        }
                    };
+
                 InitializeComponent();
             }
             catch (Exception ex)
@@ -83,9 +83,9 @@ namespace Config_Tool
         WebClient webClient;
         Stopwatch sw = new Stopwatch();
         Server srv;
-        ServerConnection conn;
-
-
+        private delegate void UpdateProgressBarDelegate(System.Windows.DependencyProperty dp, Object value);
+    
+     
         public void listSQLInstances(ComboBox box)
         {
             SqlDataSourceEnumerator instance = SqlDataSourceEnumerator.Instance;
@@ -147,7 +147,7 @@ namespace Config_Tool
 
         }
 
-        public void BackupDatabase(string BackUpLocation, string BackUpFileName, string DatabaseName, string ServerName)
+        public void LegacyBackupDatabase(string BackUpLocation, string BackUpFileName, string DatabaseName, string ServerName)
         {
 
             DatabaseName = "[" + DatabaseName + "]";
@@ -179,12 +179,80 @@ namespace Config_Tool
             }
         }
 
-   
 
-        public void RestoreDatabase(String databaseName, String backUpFile, String serverName)
+        public void BackupDatabaseSMO(string BackUpLocation, string fileName, string databaseName, string ServerName)
         {
+
+            ServerConnection connection = new ServerConnection(ServerName);
+            connection.StatementTimeout = 600;
+            Server sqlServer = new Server(connection);
+            string path = "";
+            path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase) + "\\Backup";
+            string localPath = new Uri(path).LocalPath;
+            Backup bkp = new Backup();
+            //databaseName = "[" + databaseName + "]";
+            string fileUNQ = DateTime.Now.Day.ToString() + "_" + DateTime.Now.Month.ToString() + "_" + DateTime.Now.Year.ToString() + "_" + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + "_" + DateTime.Now.Second.ToString();
+            fileName = localPath + "\\" + fileName + fileUNQ + ".bak";
+
+            Thread.Sleep(100);
+            Thread.Sleep(100);
+            backup_button.Visibility = Visibility.Hidden;
+            Thread.Sleep(100);
+            sqlBackupProgressBar.Visibility = Visibility.Visible;
+
             try
             {
+   
+                bkp.Action = BackupActionType.Database;
+                bkp.Database = databaseName;
+                bkp.Devices.AddDevice(fileName, DeviceType.File);
+                sqlBackupProgressBar.Value = 0;
+                sqlBackupProgressBar.Maximum = 100;
+                sqlBackupProgressBar.Value = 10;
+                bkp.PercentCompleteNotification = 10;
+                bkp.PercentComplete += new PercentCompleteEventHandler(BackupCompletionStatusInPercent);
+                bkp.Complete += new ServerMessageEventHandler(Backup_Completed);
+
+                bkp.SqlBackup(sqlServer);
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            Thread.Sleep(100);
+            Thread.Sleep(100);
+            backup_button.Visibility = Visibility.Visible;
+            Thread.Sleep(100);
+            sqlBackupProgressBar.Visibility = Visibility.Hidden;
+                       
+        }
+
+        public void BackupCompletionStatusInPercent(object sender, PercentCompleteEventArgs args)
+        {
+            UpdateProgressBar(sqlBackupProgressBar, args.Percent);
+        }
+
+        public void Backup_Completed(object sender, ServerMessageEventArgs args)
+        {
+            MessageBox.Show(args.Error.Message.ToString());
+        }
+   
+        
+        public void RestoreDatabase(String databaseName, String backUpFile, String serverName)
+        {
+
+            Thread.Sleep(100);
+            Thread.Sleep(100);
+            restoredbButton.Visibility = Visibility.Hidden;
+            Thread.Sleep(100);
+            sqlRestoreProgressBar.Visibility = Visibility.Visible;
+
+            try
+            {
+
+                sqlRestoreProgressBar.Value = 0;
                 string path = "";
                 path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
                 string localPath = new Uri(path).LocalPath;
@@ -210,11 +278,24 @@ namespace Config_Tool
                 sqlRestore.ReplaceDatabase = true;
                 sqlServer.KillAllProcesses(databaseName);
                 sqlRestore.Wait();
+
+                sqlRestoreProgressBar.Maximum = 100;
+                sqlRestoreProgressBar.Value = 10;
+                sqlRestore.PercentCompleteNotification = 10;
+                sqlRestore.PercentComplete += new PercentCompleteEventHandler(CompletionStatusInPercent);
+                sqlRestore.Complete += new ServerMessageEventHandler(Restore_Completed);
+                //sqlRestore.Information += new ServerMessageEventHandler(Restore_Information);
+
                 sqlRestore.SqlRestore(sqlServer);
-                db = sqlServer.Databases[databaseName];
-                db.SetOnline();
-                sqlServer.Refresh();
-                MessageBox.Show("Done");
+                //db = sqlServer.Databases[databaseName];
+                //db.SetOnline();
+                //sqlServer.Refresh();
+
+
+                Thread.Sleep(100);
+                restoredbButton.Visibility = Visibility.Visible;
+                Thread.Sleep(100);
+                sqlRestoreProgressBar.Visibility = Visibility.Hidden;
             }
             catch (Exception ex)
             {
@@ -223,7 +304,53 @@ namespace Config_Tool
             }
         }
 
-       
+
+        public void CompletionStatusInPercent(object sender, PercentCompleteEventArgs args)
+        {
+            UpdateProgressBar(sqlRestoreProgressBar, args.Percent);
+
+        }
+
+        private void UpdateProgressBar(System.Windows.Controls.ProgressBar progressBar, double progressValue)
+        {
+
+
+            var progressBarDelegateSetValue = new UpdateProgressBarDelegate(progressBar.SetValue);
+
+                // Update the Value of the ProgressBar:
+                // 1) Pass the "progressBarDelegateSetValue" delegate that points to the ProgressBar1.SetValue method
+                // 2) Set the DispatcherPriority to "Background"
+                // 3) Pass an Object() Array containing the property to update (ProgressBar.ValueProperty) and the new value 
+
+                var resultDispatch = Dispatcher.Invoke(
+                    progressBarDelegateSetValue,
+                    DispatcherPriority.Background,
+                    new object[]
+                        {
+                            System.Windows.Controls.ProgressBar.ValueProperty,
+                            progressValue
+                        });
+
+            }
+
+     
+        public void Restore_Completed(object sender, ServerMessageEventArgs args)
+        {
+
+            MessageBox.Show(args.Error.Message.ToString());
+
+        }
+
+        private void Restore_Information(object sender, ServerMessageEventArgs args)
+        {
+
+            MessageBox.Show(args.Error.Message.ToString());
+            
+
+        }
+   
+   
+           
         public void DownloadFile(string urlAddress, string location)
         {
             using (webClient = new WebClient())
@@ -368,7 +495,6 @@ namespace Config_Tool
                 {
                     string serviceName = service.ServiceName;
                     string serviceDisplayName = service.DisplayName;
-                    //string serviceType = service.ServiceType.ToString();
                     string status = service.Status.ToString();
                     comboBoxName.Items.Add(serviceName);
                 }
@@ -385,7 +511,6 @@ namespace Config_Tool
                 {
                     string serviceName = service.ServiceName;
                     string serviceDisplayName = service.DisplayName;
-                    //string serviceType = service.ServiceType.ToString();
                     string status = service.Status.ToString();
                     servicesListbox.Items.Add(serviceName);
                 }
@@ -773,7 +898,6 @@ namespace Config_Tool
                 {
                     string serviceName = service.ServiceName;
                     string serviceDisplayName = service.DisplayName;
-                    //string serviceType = service.ServiceType.ToString();
                     string status = service.Status.ToString();
                     servicesListbox.Items.Add(serviceName);
                 }
@@ -1043,7 +1167,6 @@ namespace Config_Tool
 
                 service.Stop();
                 MessageBox.Show("Service stopped");
-                //service.WaitForStatus(ServiceControllerStatus.Running, timeout);
             }
             catch (Exception ex)
             {
@@ -1062,9 +1185,6 @@ namespace Config_Tool
                 try
                 {
                     TimeSpan timeout = TimeSpan.FromMilliseconds(2000);
-
-                    //service.Stop();
-                    //logTextbox.Text = "/K " + "sc delete " + item;
                     ProcessStartInfo processInfo = new ProcessStartInfo("cmd.exe");
                     processInfo.Verb = "runas";
                     processInfo.Arguments = "/K " + "sc delete " + item;
@@ -1201,7 +1321,7 @@ namespace Config_Tool
         {
             try
             {
-                BackupDatabase(backupPathTextbox.Text, "st_backup_", sqlDBCombobox.SelectedItem.ToString(), sqlInstanceCombobox.SelectedItem.ToString());
+                BackupDatabaseSMO(backupPathTextbox.Text, "st_backup_", sqlDBCombobox.SelectedItem.ToString(), sqlInstanceCombobox.SelectedItem.ToString());
             }
             catch (Exception ex)
             {
@@ -1222,9 +1342,7 @@ namespace Config_Tool
                 firewallRule.Description = "SmartTrade Firewall Rule";
                 firewallRule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN;
                 firewallRule.Enabled = true;
-                //firewallRule.InterfaceTypes = "All";
                 firewallRule.Name = "SmartTrade Firewall Rule";
-                //firewallRule.RemotePorts = porttextBox.Text;
                 firewallRule.LocalPorts = porttextBox.Text;
                 INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(
                     Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
@@ -1273,14 +1391,17 @@ namespace Config_Tool
             }
         }
 
-        private void restoredbButton_Click(object sender, RoutedEventArgs e)
+        public void restoredbButton_Click(object sender, RoutedEventArgs e)
         {
 
+
+            
             if (sqlDBCombobox.Items.Contains(restoredDBnameTextbox.Text))
             {
                 if (MessageBox.Show("Database with the same name already exists, this operation will overwrite it, are you sure?",
            "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
+
                     try
                     {
                         RestoreDatabase(restoredDBnameTextbox.Text, restorePathTextbox.Text, sqlInstanceCombobox.SelectedItem.ToString());
@@ -1289,30 +1410,37 @@ namespace Config_Tool
                     }
                     catch (Exception ex)
                     {
-
+                        
                         MessageBox.Show(ex.Message);
                     }
+
 
                 }
                 else
                 {
                     // Do not close the window
-                }}
-                else
-                {
-         try
-                    {
-                        RestoreDatabase(restoredDBnameTextbox.Text, restorePathTextbox.Text, sqlInstanceCombobox.SelectedItem.ToString());
-                        Thread.Sleep(100);
-                        sqlDBCombobox_DropDownOpened(sender, e);
-                    }
-                    catch (Exception ex)
-                    {
-
-                        MessageBox.Show(ex.Message);
-                    }
-	}
+                }
             }
+            else
+            {
+
+
+                try
+                {
+                    RestoreDatabase(restoredDBnameTextbox.Text, restorePathTextbox.Text, sqlInstanceCombobox.SelectedItem.ToString());
+                    Thread.Sleep(100);
+                    sqlDBCombobox_DropDownOpened(sender, e);
+                }
+                catch (Exception ex)
+                {
+                    
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
+         
+            
+        }
              
         private void permissionsButton_Click(object sender, RoutedEventArgs e)
         {
@@ -1347,7 +1475,7 @@ namespace Config_Tool
                 ManagementBaseObject outParams;
 
                 //inParams["Description"] = Description;
-                inParams["Name"] = "SmartTrade";
+                inParams["Name"] = shareTextBox.Text;
                 inParams["Path"] = localPath;
                 inParams["MaximumAllowed"] = null;
                 inParams["Password"] = null;
@@ -1410,7 +1538,7 @@ namespace Config_Tool
                 doc2.Load(reader2);
                 reader2.Close();
                 XmlNode aConnection2 = doc2.DocumentElement.SelectSingleNode("/configuration/applicationSettings/SmartTrade.Service.Host.Settings/setting[6]/value/text()");
-                //updaterlocationTextbox.Text = aConnection2.InnerText;
+  
             }
             catch (Exception ex)
             {
@@ -1443,7 +1571,6 @@ namespace Config_Tool
                 doc.Load(reader);
                 reader.Close();
                 XmlNode aConnection = doc.DocumentElement.SelectSingleNode("/configuration/applicationSettings/SmartTrade.Service.Host.Settings/setting[7]/value/text()");
-                //updaterbackupTextbox.Text = aConnection.InnerText;
             }
             catch (Exception)
             {
@@ -1462,6 +1589,16 @@ namespace Config_Tool
             {
 
             }
+        }
+
+        private void porttextBox_Copy_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void progressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
         }
 
    
