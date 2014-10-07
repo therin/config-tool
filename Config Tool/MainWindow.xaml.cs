@@ -219,6 +219,11 @@ namespace Config_Tool
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+                Thread.Sleep(100);
+                Thread.Sleep(100);
+                backup_button.Visibility = Visibility.Visible;
+                Thread.Sleep(100);
+                sqlBackupProgressBar.Visibility = Visibility.Hidden;
             }
 
             Thread.Sleep(100);
@@ -301,6 +306,10 @@ namespace Config_Tool
             {
 
                 MessageBox.Show(ex.Message);
+                Thread.Sleep(100);
+                restoredbButton.Visibility = Visibility.Visible;
+                Thread.Sleep(100);
+                sqlRestoreProgressBar.Visibility = Visibility.Hidden;
             }
         }
 
@@ -479,7 +488,7 @@ namespace Config_Tool
 
             ProcessStartInfo processInfo = new ProcessStartInfo("cmd.exe");
             processInfo.Verb = "runas";
-            processInfo.Arguments = "/K " + builder.ToString();
+            processInfo.Arguments = "/K " + builder.ToString() + " && sc failure " + "\"" + name + "\"" + " reset= 86400 actions= restart/60000 ";
             Process.Start(processInfo);
             listServices2();
                       
@@ -1327,6 +1336,11 @@ namespace Config_Tool
             {
 
                 MessageBox.Show(ex.Message);
+                Thread.Sleep(100);
+                Thread.Sleep(100);
+                backup_button.Visibility = Visibility.Visible;
+                Thread.Sleep(100);
+                sqlBackupProgressBar.Visibility = Visibility.Hidden;
             }
 
         }
@@ -1412,6 +1426,10 @@ namespace Config_Tool
                     {
                         
                         MessageBox.Show(ex.Message);
+                        Thread.Sleep(100);
+                        restoredbButton.Visibility = Visibility.Visible;
+                        Thread.Sleep(100);
+                        sqlRestoreProgressBar.Visibility = Visibility.Hidden;
                     }
 
 
@@ -1467,6 +1485,26 @@ namespace Config_Tool
         {
             try
             {
+                NTAccount ntAccount = new NTAccount("Everyone");
+                SecurityIdentifier oGrpSID = (SecurityIdentifier)ntAccount.Translate(typeof(SecurityIdentifier));
+                byte[] utenteSIDArray = new byte[oGrpSID.BinaryLength];
+                oGrpSID.GetBinaryForm(utenteSIDArray, 0);
+
+                ManagementObject oGrpTrustee = new ManagementClass(new ManagementPath("Win32_Trustee"), null);
+                oGrpTrustee["Name"] = "Everyone";
+                oGrpTrustee["SID"] = utenteSIDArray;
+
+                ManagementObject oGrpACE = new ManagementClass(new ManagementPath("Win32_Ace"), null);
+                oGrpACE["AccessMask"] = 2032127;//Full access
+                oGrpACE["AceFlags"] = AceFlags.ObjectInherit | AceFlags.ContainerInherit; //propagate the AccessMask to the subfolders
+                oGrpACE["AceType"] = AceType.AccessAllowed;
+                oGrpACE["Trustee"] = oGrpTrustee;
+
+                ManagementObject oGrpSecurityDescriptor = new ManagementClass(new ManagementPath("Win32_SecurityDescriptor"), null);
+                oGrpSecurityDescriptor["ControlFlags"] = 4; //SE_DACL_PRESENT
+                oGrpSecurityDescriptor["DACL"] = new object[] { oGrpACE };
+
+                
                 string path = "";
                 path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
                 string localPath = new Uri(path).LocalPath;
@@ -1479,18 +1517,21 @@ namespace Config_Tool
                 inParams["Path"] = localPath;
                 inParams["MaximumAllowed"] = null;
                 inParams["Password"] = null;
-                inParams["Access"] = null;
+                inParams["Access"] = oGrpSecurityDescriptor;
                 inParams["Type"] = 0x0; // Disk Drive
 
                 // Invoke the method on the ManagementClass object
                 outParams = managementClass.InvokeMethod("Create", inParams, null);
                 MessageBox.Show("Done!");
 
+                /*
+
                 // Check to see if the method invocation was successful
                 if ((uint)(outParams.Properties["ReturnValue"].Value) != 0)
                 {
                     throw new Exception("Unable to share directory.");
                 }
+                */
             }
             catch (Exception ex)
             {
@@ -1504,6 +1545,7 @@ namespace Config_Tool
 
             try
             {
+                
                 StringBuilder builder = new StringBuilder();
                 string path = backupPathTextbox.Text + @"\backup.bat";
                 ProcessStartInfo processInfo = new ProcessStartInfo("cmd.exe");

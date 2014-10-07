@@ -1,0 +1,22 @@
+using System;
+
+public void RestoreDB(string databaseName) { 
+Restore restore = new Restore(); 
+string fileName = string.Format(“{0}\\{1}.bak”, testFolder, databaseName); 
+restore.Devices.Add(new BackupDeviceItem(fileName, DeviceType.File)); 
+// Just give it a new name string destinationDatabaseName = string.Format(“{0}_newly_restored”, databaseName); 
+// Go grab the current database’s logical names for the data 
+// and log files. For this example, we assume there are 1 for each. Database currentDatabase = server.Databases[databaseName]; 
+string currentLogicalData = currentDatabase.FileGroups[0].Files[0].Name; 
+string currentLogicalLog = currentDatabase.LogFiles[0].Name; 
+// Now relocate the data and log files 
+RelocateFile reloData = new RelocateFile(currentLogicalData, string.Format(@”{0}\{1}.mdf”, testFolder, destinationDatabaseName)); 
+RelocateFile reloLog = new RelocateFile(currentLogicalLog, string.Format(@”{0}\{1}_Log.ldf”, testFolder, destinationDatabaseName));
+restore.RelocateFiles.Add(reloData); restore.RelocateFiles.Add(reloLog); 
+restore.Database = destinationDatabaseName; 
+restore.ReplaceDatabase = true; 
+restore.PercentCompleteNotification = 10; 
+restore.PercentComplete += restore_PercentComplete; 
+restore.Complete += restore_Complete; 
+restore.SqlRestore(server); 
+}
