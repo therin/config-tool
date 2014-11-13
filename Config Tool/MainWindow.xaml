@@ -93,11 +93,13 @@
                             <Button x:Name="buttonService" Content="Update Service Config" HorizontalAlignment="Left" Margin="651,32,0,0" VerticalAlignment="Top" Width="144" Click="buttonService_Click" RenderTransformOrigin="3.827,2.5" Height="78"/>
                             <Label x:Name="currentService" Content="" HorizontalAlignment="Left" Margin="99,1,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.821,1.154" Height="26" Width="520" Loaded="currentService_Loaded"/>
                             <Label Content="Current Value:" HorizontalAlignment="Left" Margin="10,1,0,0" VerticalAlignment="Top" Width="100"/>
-                            <TextBox x:Name="serviceDBTextbox" HorizontalAlignment="Left" Height="34" Margin="10,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="539" Loaded="serviceDBTextbox_Loaded" TextAlignment="Center" RenderTransformOrigin="1.149,0.5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                             <TextBox x:Name="servicePortTextbox" Height="34" Margin="554,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Loaded="servicePortTextbox_Loaded" Width="92" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" RenderTransformOrigin="0.321,0.553"/>
                             <Label x:Name="currentService_Copy" Content="" HorizontalAlignment="Left" Margin="619,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.821,1.154" Height="26" Width="144" Loaded="currentService_Copy_Loaded"/>
                             <TextBox x:Name="updaterlocationTextbox" HorizontalAlignment="Left" Margin="10,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="328" Height="39" Loaded="updaterlocationTextbox_Loaded" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                             <TextBox x:Name="updaterbackupTextbox" HorizontalAlignment="Left" Margin="343,71,0,0" TextWrapping="Wrap" Width="303" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Loaded="updaterbackupTextbox_Loaded"/>
+                            <TextBox x:Name="serviceComNameTextbox" HorizontalAlignment="Left" Height="34" Margin="10,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="248" TextAlignment="Center" RenderTransformOrigin="1.149,0.5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Loaded="serviceComNameTextbox_Loaded"/>
+                            <TextBox x:Name="serviceSQLNameTextbox_Copy" HorizontalAlignment="Left" Height="34" Margin="263,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" TextAlignment="Center" RenderTransformOrigin="1.149,0.5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="SQLEXPRESS"/>
+                            <TextBox x:Name="serviceDBNameTextbox" HorizontalAlignment="Left" Height="34" Margin="406,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="143" TextAlignment="Center" RenderTransformOrigin="1.149,0.5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="SmartTradeV6"/>
                         </Grid>
                     </GroupBox>
                 </Grid>
@@ -137,12 +139,13 @@
                             <Label Content="Mobile Service Dependency" HorizontalAlignment="Left" Margin="13,85,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.474,-1" Width="183" Grid.Column="2" Grid.ColumnSpan="2"/>
                             <Label Content="SmartTime Service Dependency" HorizontalAlignment="Left" Margin="3,162,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.474,-1" Width="183" Grid.Column="2"/>
                             <Label Content="SmartTime Service Path" HorizontalAlignment="Left" Margin="98,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.474,-1" Width="146" Grid.Column="1"/>
-                            <TextBox x:Name="logTextbox" HorizontalAlignment="Left" Height="95" Margin="98,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="513" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"/>
-                            <Button x:Name="deleteSButton" Content="Delete" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.387,-1.45" Click="deleteSButton_Click" Grid.Row="1" Grid.Column="1"/>
-                            <Button x:Name="startSButton" Content="Start" HorizontalAlignment="Left" Margin="10,32,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.493,-0.4" Click="startSButton_Click" Grid.Row="1" Grid.Column="1"/>
-                            <Button x:Name="stopSButton" Content="Stop" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Width="75" Click="stopSButton_Click" RenderTransformOrigin="0.529,0.25" Grid.Row="1" Grid.Column="1"/>
+                            <TextBox x:Name="logTextbox" HorizontalAlignment="Left" Height="96" Margin="3,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="273" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"/>
+                            <Button x:Name="deleteSButton" Content="Delete" HorizontalAlignment="Left" Margin="207,86,0,0" VerticalAlignment="Top" Width="118" RenderTransformOrigin="0.387,-1.45" Click="deleteSButton_Click" Grid.Row="1" Grid.Column="1" Height="28"/>
+                            <Button x:Name="startSButton" Content="Start" HorizontalAlignment="Left" Margin="207,20,0,0" VerticalAlignment="Top" Width="118" RenderTransformOrigin="0.493,-0.4" Click="startSButton_Click" Grid.Row="1" Grid.Column="1" Height="28"/>
+                            <Button x:Name="stopSButton" Content="Stop" HorizontalAlignment="Left" Margin="207,53,0,0" VerticalAlignment="Top" Width="118" Click="stopSButton_Click" RenderTransformOrigin="0.529,0.25" Grid.Row="1" Grid.Column="1" Height="28"/>
                             <Label Content="List of relevant services:" HorizontalAlignment="Left" Margin="10,236,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.432,0.256" Grid.RowSpan="2"/>
-                            <ListBox x:Name="servicesListbox" HorizontalAlignment="Left" Height="95" Margin="10,20,0,0" VerticalAlignment="Top" Width="190" Loaded="servicesListbox_Loaded" RenderTransformOrigin="-0.844,2.008" Grid.Row="1"/>
+                            <ListBox x:Name="servicesListbox" HorizontalAlignment="Left" Height="95" Margin="13,20,0,0" VerticalAlignment="Top" Width="390" Loaded="servicesListbox_Loaded" RenderTransformOrigin="-0.844,2.008" Grid.Row="1" Grid.ColumnSpan="2" />
+                            <ProgressBar x:Name="StartServiceProgressBar" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="118" Grid.Column="1" Margin="207,20,0,0" Grid.Row="1" IsIndeterminate="True" Visibility="Hidden"  />
                         </Grid>
                     </GroupBox>
                 </Grid>
@@ -179,7 +182,7 @@
                                 <ComboBoxItem x:Name="cbi6" Content="http://smarttrade.biz/downloads/db/v6demo-NZ.bak"/>
                             </ComboBox>
                             <Button x:Name="sqlDownloadButton" Content="Download" HorizontalAlignment="Left" Margin="4,3,0,0" VerticalAlignment="Top" Width="106" Height="28" Click="sqlDownloadButton_Click" RenderTransformOrigin="0.323,-0.217" Grid.Row="2"/>
-                            <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="28" Margin="1,3,0,0" VerticalAlignment="Top" Width="153" RenderTransformOrigin="-2.33,-2" Grid.Column="1" Grid.Row="2" ValueChanged="progressBar_ValueChanged"/>
+                            <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="28" Margin="1,3,0,0" VerticalAlignment="Top" Width="153" RenderTransformOrigin="-2.33,-2" Grid.Column="1" Grid.Row="2"/>
                             <Label x:Name="labelSpeed" Content="" HorizontalAlignment="Left" Margin="3,3,0,0" VerticalAlignment="Top" Height="28" Width="78" Grid.Column="2" Grid.Row="2"/>
                             <Label x:Name="systemLabel" Content="" HorizontalAlignment="Center" Margin="4,5,116,6" VerticalAlignment="Center" Width="150" Height="29" Loaded="systemLabel_Loaded_1" Grid.ColumnSpan="2"/>
                         </Grid>
@@ -202,7 +205,7 @@
                             <Label Content="Select Database:" HorizontalAlignment="Left" Margin="258,5,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.478,0.038"/>
                             <Label Content="Backup to:" HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.534,0"/>
                             <TextBox x:Name="backupPathTextbox" HorizontalAlignment="Left" Height="34" Margin="10,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="318" RenderTransformOrigin="0.501,-0.261" Loaded="backupPathTextbox_Loaded" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                            <Button x:Name="backupdbButton" Content="Backup" HorizontalAlignment="Left" Margin="333,79,0,0" VerticalAlignment="Top" Width="81" RenderTransformOrigin="1.095,0.5" Height="34" Click="backupdbButton_Click"/>
+                            <Button x:Name="backupdbButton" Content="Backup" HorizontalAlignment="Left" Margin="333,84,0,0" VerticalAlignment="Top" Width="81" RenderTransformOrigin="1.095,0.5" Height="34" Click="backupdbButton_Click"/>
                             <Label Content="Restore from:" HorizontalAlignment="Left" Margin="10,113,0,0" VerticalAlignment="Top"/>
                             <TextBox x:Name="restorePathTextbox" HorizontalAlignment="Left" Height="43" Margin="10,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="156" RenderTransformOrigin="0.501,-0.261" Loaded="restorePathTextbox_Loaded" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                             <Button x:Name="restoredbButton" Content="Restore" Margin="333,139,5,0" VerticalAlignment="Top" RenderTransformOrigin="1.095,0.5" Height="43" Click="restoredbButton_Click"/>
@@ -228,7 +231,9 @@
                     <Button x:Name="permissionsButton" Content="Set permissions" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="816" Height="42" Click="permissionsButton_Click"/>
                     <Button x:Name="shareButton" Content="Share folder" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top" Width="816" Height="42" RenderTransformOrigin="0.521,0.224" Click="shareButton_Click"/>
                     <Button x:Name="backup_button" Content="Create scheduled task for DB backup" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Width="816" Height="42" RenderTransformOrigin="0.521,0.224" Click="backup_button_Click"/>
-                    <TextBox x:Name="shareTextBox" HorizontalAlignment="Left" Height="42" Margin="10,151,0,0" TextWrapping="Wrap" Text="SmartTrade" VerticalAlignment="Top" Width="816" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="porttextBox_Copy_TextChanged"/>
+                    <TextBox x:Name="shareTextBox" HorizontalAlignment="Left" Height="42" Margin="10,151,0,0" TextWrapping="Wrap" Text="SmartTrade" VerticalAlignment="Top" Width="816" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <Button x:Name="shortcut_Button" Content="Create a shortcut" HorizontalAlignment="Left" Margin="10,292,0,0" VerticalAlignment="Top" Width="816" Height="42" Click="shortcut_Button_Click"/>
+                    <TextBox x:Name="shortcut_Textbox" HorizontalAlignment="Left" Height="42" Margin="10,339,0,0" TextWrapping="Wrap" Text="SmartTrade" VerticalAlignment="Top" Width="816" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 </Grid>
             </TabItem>
         </TabControl>

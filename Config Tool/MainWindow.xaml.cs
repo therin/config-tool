@@ -41,6 +41,7 @@ using System.Management;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Threading;
+using IWshRuntimeLibrary;
 
 namespace Config_Tool
 {
@@ -84,7 +85,8 @@ namespace Config_Tool
         Stopwatch sw = new Stopwatch();
         Server srv;
         private delegate void UpdateProgressBarDelegate(System.Windows.DependencyProperty dp, Object value);
-    
+        private readonly BackgroundWorker worker = new BackgroundWorker();
+       
      
         public void listSQLInstances(ComboBox box)
         {
@@ -516,7 +518,7 @@ namespace Config_Tool
             ServiceController[] services = ServiceController.GetServices();
             foreach (ServiceController service in services)
             {
-                if (service.DisplayName.ToLower().Contains("sql") || service.DisplayName.ToLower().Contains("smarttrade"))
+                if (service.DisplayName.ToLower().Contains("smarttrade"))
                 {
                     string serviceName = service.ServiceName;
                     string serviceDisplayName = service.DisplayName;
@@ -738,7 +740,7 @@ namespace Config_Tool
             gateTextbox.Text = machineName;
         }
 
-
+        /*
         private void serviceDBTextbox_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -759,6 +761,13 @@ namespace Config_Tool
                 buttonService.IsEnabled = false;
             }
         }
+        
+        */
+        private void serviceComNameTextbox_Loaded(object sender, RoutedEventArgs e)
+        {
+            serviceComNameTextbox.Text = machineName;
+        }
+
 
         private void buttonService_Click(object sender, RoutedEventArgs e)
         {
@@ -774,7 +783,54 @@ namespace Config_Tool
                 XmlNode portConnection = doc.DocumentElement.SelectSingleNode("/configuration/applicationSettings/SmartTrade.Service.Host.Settings/setting[1]/value/text()");
                 XmlNode updaterLocation = doc.DocumentElement.SelectSingleNode("/configuration/applicationSettings/SmartTrade.Service.Host.Settings/setting[6]/value/text()");
                 XmlNode updaterBackup = doc.DocumentElement.SelectSingleNode("/configuration/applicationSettings/SmartTrade.Service.Host.Settings/setting[7]/value/text()");
-                aConnection.InnerText = serviceDBTextbox.Text;
+                portConnection.InnerText = servicePortTextbox.Text;
+                updaterLocation.InnerText = updaterlocationTextbox.Text;
+                updaterBackup.InnerText = updaterbackupTextbox.Text;
+
+                
+                SqlConnectionStringBuilder builder = null;
+                builder = new SqlConnectionStringBuilder(aConnection.InnerText);
+                if (String.IsNullOrEmpty(serviceSQLNameTextbox_Copy.Text))
+                {
+                    builder.DataSource = serviceComNameTextbox.Text;
+                }
+                else
+                {
+                    builder.DataSource = serviceComNameTextbox.Text + @"\" + serviceSQLNameTextbox_Copy.Text;
+                }
+                
+                builder.InitialCatalog = serviceDBNameTextbox.Text;
+                string uriPath = path + "\\Service\\SmartTrade.Service.Host.exe.config";
+                string localPath = new Uri(uriPath).LocalPath;
+                currentService_Copy.Content = portConnection.InnerText;
+                aConnection.InnerText = builder.ToString();
+                currentService.Content = aConnection.InnerText;
+                doc.Save(localPath);
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+
+        private void buttonService_Click_deprecated(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string path;
+                path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+                XmlTextReader reader = new XmlTextReader(path + "\\Service\\SmartTrade.Service.Host.exe.config");
+                XmlDocument doc = new XmlDocument();
+                doc.Load(reader);
+                reader.Close();
+                XmlNode aConnection = doc.DocumentElement.SelectSingleNode("/configuration/applicationSettings/SmartTrade.Service.Host.Settings/setting[3]/value/text()");
+                XmlNode portConnection = doc.DocumentElement.SelectSingleNode("/configuration/applicationSettings/SmartTrade.Service.Host.Settings/setting[1]/value/text()");
+                XmlNode updaterLocation = doc.DocumentElement.SelectSingleNode("/configuration/applicationSettings/SmartTrade.Service.Host.Settings/setting[6]/value/text()");
+                XmlNode updaterBackup = doc.DocumentElement.SelectSingleNode("/configuration/applicationSettings/SmartTrade.Service.Host.Settings/setting[7]/value/text()");
+                //aConnection.InnerText = serviceDBTextbox.Text;
                 portConnection.InnerText = servicePortTextbox.Text;
                 updaterLocation.InnerText = updaterlocationTextbox.Text;
                 updaterBackup.InnerText = updaterbackupTextbox.Text;
@@ -903,7 +959,7 @@ namespace Config_Tool
             servicesListbox.Items.Clear();
             foreach (ServiceController service in ServiceController.GetServices())
             {
-                if (service.DisplayName.ToLower().Contains("sql") || service.DisplayName.ToLower().Contains("smarttrade"))
+                if (service.DisplayName.ToLower().Contains("smarttrade"))
                 {
                     string serviceName = service.ServiceName;
                     string serviceDisplayName = service.DisplayName;
@@ -1149,22 +1205,66 @@ namespace Config_Tool
             listServices2();
         }
 
-        private void startSButton_Click(object sender, RoutedEventArgs e)
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-
-            ServiceController service = new ServiceController(servicesListbox.SelectedItem.ToString());
+            // run all background tasks here
             try
             {
-                TimeSpan timeout = TimeSpan.FromMilliseconds(200000);
+                string servicename = "";
+                Dispatcher.Invoke(new Action(() => { servicename = servicesListbox.SelectedItem.ToString(); }));
+                ServiceController service = new ServiceController(servicename);
+                TimeSpan timeout = TimeSpan.FromMilliseconds(20000);
+                Dispatcher.Invoke(new Action(() => { startSButton.Visibility = Visibility.Hidden; }));
+                Dispatcher.Invoke(new Action(() => { StartServiceProgressBar.Visibility = Visibility.Visible; }));
+
 
                 service.Start();
-                service.WaitForStatus(ServiceControllerStatus.Running, timeout);
-                MessageBox.Show("Service started");
+                service.WaitForStatus(ServiceControllerStatus.Running);
+                
+                if (service.Status == ServiceControllerStatus.Running)
+                {
+                    MessageBox.Show("Service started successfully.");
+                }
+                else
+                {
+                    MessageBox.Show("Service not started.");
+                    //MessageBox.Show("  Current State: {0}", service.Status.ToString("f"));
+                }
+
+                //MessageBox.Show("Service started");
+                //Dispatcher.Invoke(new Action(() => { MessageBox.Show("Service started"); }));
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+
             }
+
+
+        }
+
+        private void worker_RunWorkerCompleted(object sender,
+                                               RunWorkerCompletedEventArgs e)
+        {
+            //update ui once worker complete his work
+            //MessageBox.Show("Service started");
+            StartServiceProgressBar.Visibility = Visibility.Hidden;
+            startSButton.Visibility = Visibility.Visible;
+            //Dispatcher.Invoke(new Action(() => { StartServiceProgressBar.Visibility = Visibility.Hidden; }));
+            //Dispatcher.Invoke(new Action(() => { startSButton.Visibility = Visibility.Visible; }));
+
+        }
+
+
+        private void startSButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            worker.DoWork += worker_DoWork;
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+            worker.WorkerReportsProgress = true;
+            worker.RunWorkerAsync();
+
+            
         }
 
         private void stopSButton_Click(object sender, RoutedEventArgs e)
@@ -1246,7 +1346,7 @@ namespace Config_Tool
         {
             try
             {
-                File.WriteAllText(System.AppDomain.CurrentDomain.BaseDirectory + "\\ConfigurationFile.ini", sqlCmdTextbox.Text);
+                System.IO.File.WriteAllText(System.AppDomain.CurrentDomain.BaseDirectory + "\\ConfigurationFile.ini", sqlCmdTextbox.Text);
                 string filename = "";
                 if (is64BitSystem) { filename = "SQLEXPRWT_x64_ENU.exe"; }
                 else { filename = "SQLEXPRWT_x86_ENU.exe"; }
@@ -1633,15 +1733,39 @@ namespace Config_Tool
             }
         }
 
-        private void porttextBox_Copy_TextChanged(object sender, TextChangedEventArgs e)
+     
+        private void shortcut_Button_Click(object sender, RoutedEventArgs e)
         {
 
+            try
+            {
+                string path = "";
+                object shDesktop = (object)"Desktop";
+                WshShell shell = new WshShell();
+                string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + @"\" + shortcut_Textbox.Text + @".lnk";
+                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
+                //shortcut.Description = shortcut_Textbox.Text;
+                //shortcut.Hotkey = "Ctrl+Shift+q";
+                //shortcut.TargetPath = Environment.GetFolderPath(Environment.SpecialFolder.System) + @"\notepad.exe";
+                path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+                string uriPath = path + "\\Client\\SmartTrade.exe";
+                string localPath = new Uri(uriPath).LocalPath;
+                string uriPath2 = path + "\\Client";
+                string localPath2 = new Uri(uriPath2).LocalPath;
+                shortcut.TargetPath = localPath;
+                shortcut.WorkingDirectory = localPath2;
+                shortcut.Save();
+                MessageBox.Show("Shortcut created");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                
+            }
+            
         }
 
-        private void progressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-
-        }
+      
 
    
 

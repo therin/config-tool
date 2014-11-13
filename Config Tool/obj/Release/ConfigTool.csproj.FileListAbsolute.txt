@@ -14,3 +14,4 @@ D:\Dropbox\SUBLIME3\C\ConfigTool\Config Tool\obj\Release\Config Tool_MarkupCompi
 D:\Dropbox\SUBLIME3\C\ConfigTool\Config Tool\obj\Release\Config Tool.g.resources
 D:\Dropbox\SUBLIME3\C\ConfigTool\Config Tool\obj\Release\Config_Tool.Properties.Resources.resources
 D:\Dropbox\SUBLIME3\C\ConfigTool\Config Tool\obj\Release\ConfigTool.csproj.GenerateResource.Cache
+D:\Dropbox\SUBLIME3\C\ConfigTool\Config Tool\obj\Release\Interop.IWshRuntimeLibrary.dll
